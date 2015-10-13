@@ -1,6 +1,8 @@
-package demo;
+package article;
 
-public class Article {
+import java.io.Serializable;
+
+public class Article implements Serializable {
 
 	public String fileName;
 	public String title;
