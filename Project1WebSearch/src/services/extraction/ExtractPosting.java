@@ -1,27 +1,27 @@
-package article;
+package services.extraction;
 
 import java.util.ArrayList;
 
-public class ExtractArticle {
+import util.IdGenerator;
+import domain.Posting;
 
-	public static ArrayList<Article> extract(String fileName, String fileContent) {
+public class ExtractPosting {
 
+	public static ArrayList<Posting> extract(String fileName, String fileContent) {
 		ArrayList<String> rawArticles = extractRawArticles(fileContent);
-
-		ArrayList<Article> articles = extractArticles(fileName, rawArticles);
-
+		ArrayList<Posting> articles = extractPostings(fileName, rawArticles);
 		return articles;
-
 	}
 
-	private static ArrayList<Article> extractArticles(String fileName, ArrayList<String> rawArticles) {
-		ArrayList<Article> articles = new ArrayList<>();
-		for (String str : rawArticles) {
-			Article article = new Article();
-			article.fileName = fileName;
-			article.title = extractTitle(str);
-			article.content = extractContent(str);
-			articles.add(article);
+	private static ArrayList<Posting> extractPostings(String fileName, ArrayList<String> rawArticles) {
+		ArrayList<Posting> articles = new ArrayList<>();
+		for (int i=0; i<rawArticles.size(); i++) {
+			int id = IdGenerator.getInstance().getNextIncrementalId();
+			String url = fileName;
+			String title = extractTitle(rawArticles.get(i));
+			String body = extractContent(rawArticles.get(i));
+			Posting posting = new Posting(id, url, title, body);
+			articles.add(posting);
 		}
 		return articles;
 	}

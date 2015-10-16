@@ -1,27 +1,27 @@
-package index;
+package services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import article.Article;
+import domain.Posting;
 
 public class InvertedIndex {
 
-	private HashMap<String, ArrayList<Article>> invertedIndex;
+	private HashMap<String, ArrayList<Posting>> invertedIndex;
 	
 	public InvertedIndex(){
-		invertedIndex = new HashMap<String,ArrayList<Article>>();
+		invertedIndex = new HashMap<String,ArrayList<Posting>>();
 	}
 	
 	public void update(IndexedArticle indexedArticle){
 		for (String key : indexedArticle.index.keySet()) {
 			if(invertedIndex.containsKey(key)){
-				ArrayList<Article> t = invertedIndex.get(key);
+				ArrayList<Posting> t = invertedIndex.get(key);
 				t.add(indexedArticle.article);
 				invertedIndex.replace(key, invertedIndex.replace(key, t));
 			}
 			else{
-				invertedIndex.put(key, new ArrayList<Article>());
+				invertedIndex.put(key, new ArrayList<Posting>());
 			}
 		}
 

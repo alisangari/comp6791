@@ -1,26 +1,26 @@
-package index;
+package services;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import article.Article;
+import domain.Posting;
 
 public class IndexedArticle implements Serializable {
-	Article article;
+	Posting article;
 	HashMap<String, ArrayList<Integer>> index;
 	
 	private IndexedArticle(){
-		article = new Article();
+		article = new Posting();
 		index = new HashMap<String, ArrayList<Integer>>();
 	}
 	
-	public IndexedArticle(Article article){
+	public IndexedArticle(Posting article){
 		this.article = article;
 		index = Indexer.index(article);
 	}
 
-	public IndexedArticle(Article article, HashMap<String, ArrayList<Integer>> index){
+	public IndexedArticle(Posting article, HashMap<String, ArrayList<Integer>> index){
 		this.article = article;
 		this.index = index;
 	}

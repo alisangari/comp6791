@@ -14,12 +14,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import article.Article;
+import domain.Posting;
 
 public class XmlExtractor {
 
-	public static ArrayList<Article> getArticles(String fileContent) {
-		ArrayList<Article> articles = new ArrayList<>();
+	public static ArrayList<Posting> getArticles(String fileContent) {
+		ArrayList<Posting> articles = new ArrayList<>();
 		// Get the DOM Builder Factory
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -49,7 +49,7 @@ public class XmlExtractor {
 
 				if (node instanceof Element) {
 
-					Article article = new Article();
+					Posting article = new Posting();
 
 					// article.title =
 					// node.getAttributes().getNamedItem("id").getNodeValue();
@@ -73,7 +73,7 @@ public class XmlExtractor {
 								article.title = content;
 								break;
 							case "BODY":
-								article.content = content;
+								article.body = content;
 								break;
 							}
 

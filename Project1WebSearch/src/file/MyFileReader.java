@@ -41,27 +41,7 @@ public class MyFileReader {
 		return new File(Constants.FILE_LOCATION_ON_DISK + fileName);
 	}
 
-	public static ArrayList<String> getFilesList() {
-		ArrayList<String> fileNames = new ArrayList<String>();
-		File folder = new File(Constants.FILE_LOCATION_ON_DISK);
-		File[] listOfFiles = folder.listFiles();
-		for (File file : listOfFiles) {
-			fileNames.add(file.getName());
-		}
-		return fileNames;
-	}
+	
 
-	public static String readTextFile(String path) {
-		StringBuilder content = new StringBuilder();
-		try (BufferedReader br = new BufferedReader(new FileReader(Constants.FILE_LOCATION_ON_DISK + path))) {
-			String line;
-			while ((line = br.readLine()) != null) {
-				content.append(line);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return content.toString();
-	}
+	
 }
