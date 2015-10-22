@@ -11,11 +11,11 @@ import constants.Constants;
 
 public class SpimiMerge {
 
-//	public static void main(String[] args) {
-//
-//		// merge indexes
-//		start();
-//	}
+	// public static void main(String[] args) {
+	//
+	// // merge indexes
+	// start();
+	// }
 
 	public static boolean start() {
 		String dir = Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK;
@@ -24,10 +24,10 @@ public class SpimiMerge {
 		String merged = dir + fileNames.get(0);
 		String intermediaryFileName = dirMerged + "intermediary";
 
-		// for (int i = 1; i < fileNames.size(); i++) {
-		GeneralFile.rename(merged, intermediaryFileName);
-		merged = twoFileMerge(intermediaryFileName, dir + fileNames.get(2));
-		// }
+		for (int i = 1; i < fileNames.size(); i++) {
+			GeneralFile.rename(merged, intermediaryFileName);
+			merged = twoFileMerge(intermediaryFileName, dir + fileNames.get(i));
+		}
 
 		return false;
 	}
@@ -52,50 +52,53 @@ public class SpimiMerge {
 			while (line1 != null && line2 != null) {
 				i++;
 				// do magic
+				if (line1.isEmpty()) {
+					line1 = reader1.readLine();
+					continue;
+				}if (line2.isEmpty()) {
+					line2 = reader2.readLine();
+					continue;
+				}
 				line1 = line1.replaceAll("\\[", "");
 				line1 = line1.replaceAll("\\]", "");
 
 				line2 = line2.replaceAll("\\[", "");
 				line2 = line2.replaceAll("\\]", "");
 
-				String[] arr1 = line1.split("\\"
-						+ Constants.KEY_VALUE_SEPARATOR);
-				String[] arr2 = line2.split("\\"
-						+ Constants.KEY_VALUE_SEPARATOR);
+					String[] arr1 = line1.split("\\"
+							+ Constants.KEY_VALUE_SEPARATOR);
+					String[] arr2 = line2.split("\\"
+							+ Constants.KEY_VALUE_SEPARATOR);
 
-				String[] valArr1 = arr1[1].split(",");
-				String[] valArr2 = arr2[1].split(",");
+					String[] valArr1 = arr1[1].split(",");
+					String[] valArr2 = arr2[1].split(",");
 
-				// String[] arr1 = new String[arr1t[1].split(",").length+1];
-				// String[] arr2 = new String[arr2t[1].split(",").length+1];
+					String key1 = arr1[0];
+					String key2 = arr2[0];
 
-				// arr1 = line1.split(",");
-				// arr2 = line2.split(",");
-				String key1 = arr1[0];
-				String key2 = arr2[0];
-				// String doc = "";
-				if (key1.equals(key2)) {
-					doc.append(key1 + Constants.KEY_VALUE_SEPARATOR
-							+ mergeVals(valArr1, valArr2));// ",merge both values"
-					doc.append(System.getProperty("line.separator"));
-					line1 = reader1.readLine();
-					line2 = reader2.readLine();
-				} else if (key1.compareTo(key2) < 0) {
-					doc.append(key1 + Constants.KEY_VALUE_SEPARATOR
-							+ mergeVals(valArr1, new String[1]));
-					doc.append(System.getProperty("line.separator"));
-					line1 = reader1.readLine();
-				} else {// if (key1.compareTo(key2) > 0) {
-					doc.append(key2 + Constants.KEY_VALUE_SEPARATOR
-							+ mergeVals(new String[1], valArr2));
-					doc.append(System.getProperty("line.separator"));
-					line2 = reader2.readLine();
-				}
-				if (i >= Constants.BATCH_SIZE) {
-					TextFile.append(dirMerged, mergedFileName, doc.toString());
-					i = -1;
-					doc = new StringBuilder();
-				}
+					if (key1.equals(key2)) {
+						doc.append(key1 + Constants.KEY_VALUE_SEPARATOR
+								+ mergeVals(valArr1, valArr2));// ",merge both values"
+						doc.append(System.getProperty("line.separator"));
+						line1 = reader1.readLine();
+						line2 = reader2.readLine();
+					} else if (key1.compareTo(key2) < 0) {
+						doc.append(key1 + Constants.KEY_VALUE_SEPARATOR
+								+ mergeVals(valArr1, new String[1]));
+						doc.append(System.getProperty("line.separator"));
+						line1 = reader1.readLine();
+					} else {// if (key1.compareTo(key2) > 0) {
+						doc.append(key2 + Constants.KEY_VALUE_SEPARATOR
+								+ mergeVals(new String[1], valArr2));
+						doc.append(System.getProperty("line.separator"));
+						line2 = reader2.readLine();
+					}
+					if (i >= Constants.BATCH_SIZE) {
+						TextFile.append(dirMerged, mergedFileName,
+								doc.toString());
+						i = -1;
+						doc = new StringBuilder();
+					}
 			}
 			while (line1 != null) {
 				i++;
@@ -148,6 +151,5 @@ public class SpimiMerge {
 		}
 		return res.toString();
 	}
-
 
 }

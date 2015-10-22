@@ -41,6 +41,7 @@ public class SpimiIndex {
 				c = 0;
 			}
 		}
+		spimiIndex(postings, indxFileCounter++);
 	}
 
 	private static void spimiIndex(ArrayList<Posting> postings,
