@@ -5,8 +5,8 @@ import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-import util.file.GeneralFile;
-import util.file.TextFile;
+import utility.file.GeneralFile;
+import utility.file.TextFile;
 import contract.Constants;
 
 public class SpimiMerge {

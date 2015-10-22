@@ -3,9 +3,9 @@ package demo;
 import java.util.ArrayList;
 
 import services.extraction.ExtractPosting;
-import util.file.GeneralFile;
-import util.file.RandomAccessFile;
-import util.file.TextFile;
+import utility.file.GeneralFile;
+import utility.file.RandomAccessFile;
+import utility.file.TextFile;
 import contract.Constants;
 import domain.Posting;
 

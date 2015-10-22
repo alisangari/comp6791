@@ -10,8 +10,11 @@ import contract.Constants;
 
 public class Search {
 
-	public static void main(String[] args) throws IOException {
-		String searchStr = "able ability";
+	public static void main(String[] args) {
+	}
+
+	public static ArrayList<String> search(String searchStr) throws IOException{
+		// String searchStr = "jimmy carter";
 		String[] searchQuery = searchStr.split(" ");
 
 		ArrayList<String[]> lists = new ArrayList<>();
@@ -36,17 +39,17 @@ public class Search {
 				line1 = reader1.readLine();
 			}
 		}
-		String commons = getResults(lists);
+		ArrayList<String> commons = getResults(lists);
 		System.out.println("commons: " + commons);
-
+		return commons;
 	}
 
-	private static String getResults(ArrayList<String[]> lists) {
+	private static ArrayList<String> getResults(ArrayList<String[]> lists) {
 		ArrayList<ArrayList<String>> arrLists = new ArrayList<>();
 
 		for (String[] arr : lists) {
 			ArrayList<String> list = new ArrayList<>();
-			for(String str: arr){
+			for (String str : arr) {
 				list.add(str);
 			}
 			arrLists.add((ArrayList<String>) list);
@@ -56,7 +59,7 @@ public class Search {
 		for (int i = 1; i < arrLists.size(); i++) {
 			commons.retainAll(new HashSet<String>(arrLists.get(i)));
 		}
-		return commons.toString();
+		return commons;
 	}
 
 }

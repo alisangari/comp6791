@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
-import util.Strings;
-import util.file.GeneralFile;
-import util.file.RandomAccessFile;
-import util.file.TextFile;
+import utility.Strings;
+import utility.file.GeneralFile;
+import utility.file.RandomAccessFile;
+import utility.file.TextFile;
 import contract.Constants;
 import domain.Posting;
 

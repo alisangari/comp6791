@@ -2,7 +2,7 @@ package services.extraction;
 
 import java.util.ArrayList;
 
-import util.IdGenerator;
+import utility.IdGenerator;
 import domain.Posting;
 
 public class ExtractPosting {
