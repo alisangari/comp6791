@@ -19,13 +19,14 @@ public class SpimiDemo {
 
 	public static void main(String[] args) {
 
-		
-		// firstAct(); //pre-processing of documents and splitting them into individual random access files.
+		// firstAct(); //pre-processing of documents and splitting them into
+		// individual random access files.
 
-//		 secondAct(); //generating blocks of inverted indexes
+		// secondAct(); //generating blocks of inverted indexes
 
 		// merge indexes
-		merge();
+		// merge();
+		twoFileMerge();
 	}
 
 	private static void secondAct() {
@@ -83,36 +84,96 @@ public class SpimiDemo {
 			data.append(key + "," + value.toString());
 			data.append(System.getProperty("line.separator"));
 		}
-		TextFile.write(Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK,
-				"indx" + indxFileCounter, data.toString());
+		TextFile.write(Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK, "indx"
+				+ indxFileCounter, data.toString());
 
+	}
+
+	private static boolean twoFileMerge(String fileName1, String fileName2) {
+		String dir = Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK;
+
+		try {
+			FileReader r1 = new FileReader(dir + fileName1);
+			FileReader r2 = new FileReader(dir + fileName2);
+
+			LineNumberReader reader1 = new LineNumberReader(r1);
+			LineNumberReader reader2 = new LineNumberReader(r2);
+
+			String line1 = reader1.readLine();
+			String line2 = reader2.readLine();
+
+			while (line1 != null && line2 != null) {
+				// do magic
+				line1 = line1.replaceAll("\\[", "");
+				line1 = line1.replaceAll("\\]", "");
+
+				line2 = line2.replaceAll("\\[", "");
+				line2 = line2.replaceAll("\\]", "");
+
+				String[] arr1 = line1.split(",");
+				String[] arr2 = line2.split(",");
+				String key1 = arr1[0];
+				String key2 = arr2[0];
+				String doc = "";
+				if (key1.equals(key2)) {
+					doc = key1 + ",merge both values";
+					line1 = reader1.readLine();
+					line2 = reader2.readLine();
+				} else if (key1.compareTo(key2) < 0) {
+					doc = key1 + ", values 1";
+					line1 = reader1.readLine();
+				} else if (key1.compareTo(key2) > 0) {
+					doc = key2 + ", values 2";
+					line2 = reader2.readLine();
+				}
+				TextFile.append(Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK,
+						"merged", doc);
+
+			}
+			while (line1 != null) {
+				String doc = line1;
+				line1 = reader1.readLine();
+				TextFile.append(Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK,
+						"merged", doc);
+			}
+			while (line2 != null) {
+				String doc = line2;
+				line2 = reader2.readLine();
+				TextFile.append(Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK,
+						"merged", doc);
+			}
+
+		} catch (Exception e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private static boolean merge() {
 		String dir = Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK;
-		ArrayList<String> fileNames = GeneralFile
-				.getFilesList(dir);
+		ArrayList<String> fileNames = GeneralFile.getFilesList(dir);
 
 		try {
 			FileReader[] frs = new FileReader[fileNames.size()];
-			for(int i=0; i<frs.length; i++){
-				frs[i] = new FileReader(dir+fileNames.get(i));
+			for (int i = 0; i < frs.length; i++) {
+				frs[i] = new FileReader(dir + fileNames.get(i));
 			}
-//			FileReader r1 = new FileReader(destination + fileName1);
-//			FileReader r2 = new FileReader(destination + fileName2);
+			// FileReader r1 = new FileReader(destination + fileName1);
+			// FileReader r2 = new FileReader(destination + fileName2);
 			LineNumberReader[] readers = new LineNumberReader[fileNames.size()];
-			for(int i=0; i<readers.length; i++){
-				readers[i]=new LineNumberReader(frs[i]);
+			for (int i = 0; i < readers.length; i++) {
+				readers[i] = new LineNumberReader(frs[i]);
 			}
-//			LineNumberReader reader1 = new LineNumberReader(r1);
-//			LineNumberReader reader2 = new LineNumberReader(r2);
+			// LineNumberReader reader1 = new LineNumberReader(r1);
+			// LineNumberReader reader2 = new LineNumberReader(r2);
 			String[] lines = new String[fileNames.size()];
-			for(int i=0; i<lines.length;i++){
+			for (int i = 0; i < lines.length; i++) {
 				lines[i] = readers[i].readLine();
 			}
-//			String line1 = reader1.readLine();
-//			String line2 = reader2.readLine();
-			
+			// String line1 = reader1.readLine();
+			// String line2 = reader2.readLine();
+
 			while (lines[0] != null && lines[1] != null) {
 				// do magic
 				String line1 = lines[0].replaceAll("[", "");
@@ -125,12 +186,32 @@ public class SpimiDemo {
 				String key1 = arr1[0];
 				String key2 = arr1[1];
 				String doc = "";
-				if(key1.equals(key2)){
-					doc = key1+",merge";
+				if (key1.equals(key2)) {
+					doc = key1 + ",merge both values";
 					lines[0] = readers[0].readLine();
 					lines[1] = readers[1].readLine();
+				} else if (key1.compareTo(key2) < 0) {
+					doc = key1 + ", values 1";
+					lines[0] = readers[0].readLine();
+				} else if (key1.compareTo(key2) > 0) {
+					doc = key2 + ", values 2";
+					lines[1] = readers[1].readLine();
 				}
-				
+				TextFile.append(Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK,
+						"merged", doc);
+
+			}
+			while (lines[0] != null) {
+				String doc = lines[0];
+				lines[0] = readers[0].readLine();
+				TextFile.append(Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK,
+						"merged", doc);
+			}
+			while (lines[1] != null) {
+				String doc = lines[1];
+				lines[1] = readers[1].readLine();
+				TextFile.append(Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK,
+						"merged", doc);
 			}
 
 		} catch (Exception e) {
