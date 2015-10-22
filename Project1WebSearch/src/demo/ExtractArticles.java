@@ -6,7 +6,7 @@ import services.extraction.ExtractPosting;
 import util.file.GeneralFile;
 import util.file.RandomAccessFile;
 import util.file.TextFile;
-import constants.Constants;
+import contract.Constants;
 import domain.Posting;
 
 public class ExtractArticles {
@@ -29,7 +29,7 @@ public class ExtractArticles {
 					.extract(fileName, TextFile.read(fileName));
 			for (Posting posting : postings) {
 				RandomAccessFile.write(posting,
-						constants.Constants.DOCUMENT_LOCATION_ON_DISK,
+						contract.Constants.DOCUMENT_LOCATION_ON_DISK,
 						new Integer(posting.id).toString());
 				// RandomAccessFile.read(
 				// contants.Constants.DOCUMENT_LOCATION_ON_DISK,

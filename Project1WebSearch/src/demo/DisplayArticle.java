@@ -1,7 +1,7 @@
 package demo;
 
 import util.file.RandomAccessFile;
-import constants.Constants;
+import contract.Constants;
 import domain.Posting;
 
 public class DisplayArticle {

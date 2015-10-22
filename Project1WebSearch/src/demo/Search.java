@@ -6,7 +6,7 @@ import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import constants.Constants;
+import contract.Constants;
 
 public class Search {
 

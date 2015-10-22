@@ -1,7 +1,7 @@
 package demo;
 
-import demo.spimi.SpimiIndex;
-import demo.spimi.SpimiMerge;
+import services.spimi.SpimiIndex;
+import services.spimi.SpimiMerge;
 
 public class Spimi {
 

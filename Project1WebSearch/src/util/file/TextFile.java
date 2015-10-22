@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import file.Constants;
+import contract.Constants;
 
 public class TextFile {
 

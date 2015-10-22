@@ -1,4 +1,4 @@
-package demo.spimi;
+package services.spimi;
 
 import java.io.FileReader;
 import java.io.LineNumberReader;
@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 import util.file.GeneralFile;
 import util.file.TextFile;
-import constants.Constants;
+import contract.Constants;
 
 public class SpimiMerge {
 

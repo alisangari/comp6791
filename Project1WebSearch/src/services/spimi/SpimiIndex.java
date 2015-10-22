@@ -1,4 +1,4 @@
-package demo.spimi;
+package services.spimi;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,7 +9,7 @@ import util.Strings;
 import util.file.GeneralFile;
 import util.file.RandomAccessFile;
 import util.file.TextFile;
-import constants.Constants;
+import contract.Constants;
 import domain.Posting;
 
 public class SpimiIndex {

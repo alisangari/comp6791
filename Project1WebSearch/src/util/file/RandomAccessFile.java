@@ -18,6 +18,7 @@ public class RandomAccessFile {
 			FileOutputStream fout = new FileOutputStream(destination+fileName);
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
 			oos.writeObject(o);
+			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
