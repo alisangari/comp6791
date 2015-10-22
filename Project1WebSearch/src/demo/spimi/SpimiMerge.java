@@ -3,6 +3,7 @@ package demo.spimi;
 import java.io.FileReader;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import util.file.GeneralFile;
 import util.file.TextFile;
@@ -10,15 +11,31 @@ import constants.Constants;
 
 public class SpimiMerge {
 
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
+//
+//		// merge indexes
+//		start();
+//	}
 
-		// merge indexes
-		merge();
+	public static boolean start() {
+		String dir = Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK;
+		String dirMerged = Constants.MERGED_INDEX_LOCATION_ON_DISK;
+		ArrayList<String> fileNames = GeneralFile.getFilesList(dir);
+		String merged = dir + fileNames.get(0);
+		String intermediaryFileName = dirMerged + "intermediary";
+
+		// for (int i = 1; i < fileNames.size(); i++) {
+		GeneralFile.rename(merged, intermediaryFileName);
+		merged = twoFileMerge(intermediaryFileName, dir + fileNames.get(2));
+		// }
+
+		return false;
 	}
 
 	private static String twoFileMerge(String fileName1, String fileName2) {
 		String dirMerged = Constants.MERGED_INDEX_LOCATION_ON_DISK;
 		String mergedFileName = "merged";
+		GeneralFile.delete(dirMerged + mergedFileName);
 
 		try {
 			FileReader r1 = new FileReader(fileName1);
@@ -41,23 +58,37 @@ public class SpimiMerge {
 				line2 = line2.replaceAll("\\[", "");
 				line2 = line2.replaceAll("\\]", "");
 
-				String[] arr1 = line1.split(",");
-				String[] arr2 = line2.split(",");
+				String[] arr1 = line1.split("\\"
+						+ Constants.KEY_VALUE_SEPARATOR);
+				String[] arr2 = line2.split("\\"
+						+ Constants.KEY_VALUE_SEPARATOR);
+
+				String[] valArr1 = arr1[1].split(",");
+				String[] valArr2 = arr2[1].split(",");
+
+				// String[] arr1 = new String[arr1t[1].split(",").length+1];
+				// String[] arr2 = new String[arr2t[1].split(",").length+1];
+
+				// arr1 = line1.split(",");
+				// arr2 = line2.split(",");
 				String key1 = arr1[0];
 				String key2 = arr2[0];
 				// String doc = "";
 				if (key1.equals(key2)) {
-					doc.append(key1 + ",merge both values");
-					doc.append("\n");
+					doc.append(key1 + Constants.KEY_VALUE_SEPARATOR
+							+ mergeVals(valArr1, valArr2));// ",merge both values"
+					doc.append(System.getProperty("line.separator"));
 					line1 = reader1.readLine();
 					line2 = reader2.readLine();
 				} else if (key1.compareTo(key2) < 0) {
-					doc.append(key1 + ", values 1");
-					doc.append("\n");
+					doc.append(key1 + Constants.KEY_VALUE_SEPARATOR
+							+ mergeVals(valArr1, new String[1]));
+					doc.append(System.getProperty("line.separator"));
 					line1 = reader1.readLine();
 				} else {// if (key1.compareTo(key2) > 0) {
-					doc.append(key2 + ", values 2");
-					doc.append("\n");
+					doc.append(key2 + Constants.KEY_VALUE_SEPARATOR
+							+ mergeVals(new String[1], valArr2));
+					doc.append(System.getProperty("line.separator"));
 					line2 = reader2.readLine();
 				}
 				if (i >= Constants.BATCH_SIZE) {
@@ -69,7 +100,7 @@ public class SpimiMerge {
 			while (line1 != null) {
 				i++;
 				doc.append(line1);
-				doc.append("\n");
+				doc.append(System.getProperty("line.separator"));
 				line1 = reader1.readLine();
 				if (i >= Constants.BATCH_SIZE) {
 					TextFile.append(dirMerged, mergedFileName, doc.toString());
@@ -80,7 +111,7 @@ public class SpimiMerge {
 			while (line2 != null) {
 				i++;
 				doc.append(line2);
-				doc.append("\n");
+				doc.append(System.getProperty("line.separator"));
 				line2 = reader2.readLine();
 				if (i >= Constants.BATCH_SIZE) {
 					TextFile.append(dirMerged, mergedFileName, doc.toString());
@@ -99,19 +130,24 @@ public class SpimiMerge {
 		return dirMerged + mergedFileName;
 	}
 
-	private static boolean merge() {
-		String dir = Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK;
-		String dirMerged = Constants.MERGED_INDEX_LOCATION_ON_DISK;
-		ArrayList<String> fileNames = GeneralFile.getFilesList(dir);
-		String merged = dir + fileNames.get(0);
-		String intermediaryFileName = dirMerged + "intermediary";
-
-		// for (int i = 1; i < fileNames.size(); i++) {
-		GeneralFile.rename(merged, intermediaryFileName);
-		merged = twoFileMerge(intermediaryFileName, dir + fileNames.get(2));
-		// }
-
-		return false;
+	private static String mergeVals(String[] valArr1, String[] valArr2) {
+		TreeSet<String> vals = new TreeSet<>();
+		if (valArr1[0] != null) {
+			for (String val : valArr1) {
+				vals.add(val);
+			}
+		}
+		if (valArr2[0] != null) {
+			for (String val : valArr2) {
+				vals.add(val);
+			}
+		}
+		ArrayList<String> res = new ArrayList<>();
+		for (String str : vals) {
+			res.add(str);
+		}
+		return res.toString();
 	}
+
 
 }

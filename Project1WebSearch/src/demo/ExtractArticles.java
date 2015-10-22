@@ -9,7 +9,7 @@ import util.file.TextFile;
 import constants.Constants;
 import domain.Posting;
 
-public class FirstAct {
+public class ExtractArticles {
 
 	private static void main(String[] args) {
 		firstAct(); // pre-processing of documents and splitting them into

@@ -23,10 +23,10 @@ public class Strings {
 	public static String normalize(String str, boolean toLower,
 			boolean removeDigits, boolean removeNonAlphaNumeric) {
 		if (removeNonAlphaNumeric) {
-			str = str.replaceAll("[,._\\-()\"'&#;]", "");
+			str = str.replaceAll("[,._\\-()\"'&#;<>/$*+:]", " ");
 		}
 		if (removeDigits) {
-			str = str.replaceAll("[0-9]", "");
+			str = str.replaceAll("[0-9]", " ");
 		}
 		if (toLower) {
 			str = str.toLowerCase();

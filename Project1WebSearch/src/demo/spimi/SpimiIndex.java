@@ -13,12 +13,12 @@ import constants.Constants;
 import domain.Posting;
 
 public class SpimiIndex {
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
+//
+//		index(); // generating blocks of inverted indexes
+//	}
 
-		secondAct(); // generating blocks of inverted indexes
-	}
-
-	private static void secondAct() {
+	public static void start() {
 		ArrayList<String> fileNames = GeneralFile
 				.getFilesList(Constants.DOCUMENT_LOCATION_ON_DISK);
 
@@ -48,7 +48,7 @@ public class SpimiIndex {
 		TreeMap<String, ArrayList<Integer>> invertedIndex = new TreeMap<String, ArrayList<Integer>>();
 		// extract terms
 		for (Posting posting : postings) {
-//			posting.body = Strings.normalize(posting.body, true, true, true);
+			posting.body = Strings.normalize(posting.body, true, true, true);
 			String[] terms = posting.body.split(" ");
 			terms = Strings.cleanse(terms);
 			HashSet<String> tokens = Strings.tokenize(terms);
@@ -84,7 +84,7 @@ public class SpimiIndex {
 		for (Map.Entry<String, ArrayList<Integer>> entry : invertedIndex.entrySet()) {
 			String key = (String) entry.getKey();
 			ArrayList<Integer> value = (ArrayList<Integer>) entry.getValue();
-			data.append(key + "," + value.toString());
+			data.append(key + Constants.KEY_VALUE_SEPARATOR + value.toString());
 			data.append(System.getProperty("line.separator"));
 		}
 		TextFile.write(Constants.INDIVIDUAL_INDEXES_LOCATION_ON_DISK, "indx"
