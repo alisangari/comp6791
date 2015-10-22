@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import util.Strings;
 import domain.Posting;
 
 public class Indexer {
 
 	public static HashMap<String, ArrayList<Integer>> index(Posting article) {
 
-		article.body = normalize(article.body, true, true, true);
+		article.body = Strings.normalize(article.body, true, true, true);
 		String[] terms = article.body.split(" ");
-		terms = Cleanse(terms);
+		terms = Strings.cleanse(terms);
 //		terms = normalize(terms, true);
-		HashSet<String> tokens = tokenize(terms);
+		HashSet<String> tokens = Strings.tokenize(terms);
 		HashMap<String, ArrayList<Integer>> res = new HashMap<String, ArrayList<Integer>>();
 
 		for (String token : tokens) {
