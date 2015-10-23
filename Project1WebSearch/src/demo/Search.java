@@ -6,6 +6,7 @@ import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import utility.Strings;
 import contract.Constants;
 
 public class Search {
@@ -13,7 +14,7 @@ public class Search {
 	public static void main(String[] args) {
 	}
 
-	public static ArrayList<String> search(String searchStr) throws IOException{
+	public static ArrayList<String> search(String searchStr) throws IOException {
 		// String searchStr = "jimmy carter";
 		String[] searchQuery = searchStr.split(" ");
 
@@ -31,8 +32,12 @@ public class Search {
 				String[] arr1 = line1.split("\\"
 						+ Constants.KEY_VALUE_SEPARATOR);
 				if (arr1[0].equalsIgnoreCase(searchQuery[i])) {
-					lists.add(arr1[1].split(","));
-					System.out.println(arr1[1]);
+					lists.add(Strings.getDocIdsFromString(arr1[1]));
+//					 System.out.println(arr1[1]);
+//					for(String str:Strings.getDocIdsFromString(arr1[1])){
+//						System.out.print(str+"-");
+//					}
+//					System.out.println();
 					reader1.close();
 					break;
 				}
@@ -40,7 +45,7 @@ public class Search {
 			}
 		}
 		ArrayList<String> commons = getResults(lists);
-		System.out.println("commons: " + commons);
+//		 System.out.println("commons: " + commons);
 		return commons;
 	}
 

@@ -21,4 +21,14 @@ public class DisplayArticle {
 		return "";
 	}
 
+	public static String displayTitle(String fileName) {
+		Object obj = RandomAccessFile.read(Constants.DOCUMENT_LOCATION_ON_DISK,
+				fileName);
+		if (obj instanceof Posting) {
+			// System.out.println(((Posting) obj).body);
+			return ((Posting) obj).title;
+		}
+		return "";
+	}
+
 }

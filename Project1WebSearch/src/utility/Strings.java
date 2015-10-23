@@ -3,6 +3,16 @@ package utility;
 import java.util.HashSet;
 
 public class Strings {
+	
+	public static String[] getDocIdsFromString(String str){
+		str = str.replaceAll("\\[", "");
+		str = str.replaceAll("\\]", "");
+		String[] ids = str.split(",");
+		for(int i=0; i<ids.length; i++){
+			ids[i] = ids[i].trim();
+		}
+		return ids;
+	}
 
 	public static String[] cleanse(String[] terms) {
 		String[] temp = new String[terms.length];

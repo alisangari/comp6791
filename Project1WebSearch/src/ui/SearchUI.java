@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,11 +13,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 import demo.DisplayArticle;
 import demo.Search;
@@ -64,9 +70,12 @@ public class SearchUI {
 
 		textField = new JTextField();
 		panel.add(textField);
-		textField.setColumns(10);
-
+		textField.setColumns(50);
+		JScrollPane scrollPane = new JScrollPane();
 		JList<String> list = new JList<>();
+		list.setSize(500, 50);
+		scrollPane.setViewportView(list);
+
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		DefaultListModel<String> listModel = new DefaultListModel<>();
 		JTextArea textArea = new JTextArea();
@@ -74,16 +83,36 @@ public class SearchUI {
 		textArea.setRows(1);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
-		textArea.setSize(500, 50);
-		
-		list.setSize(300, 50);
-		list.addListSelectionListener(new ListSelectionListener() {
+		textArea.setColumns(50);
+		JScrollPane scrollPane2 = new JScrollPane();
+		scrollPane2.setViewportView(textArea);
+		scrollPane2.setSize(500, 50);
 
+		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				if (!arg0.getValueIsAdjusting()) {
 					String fileName = list.getSelectedValue().toString();
-					textArea.setText(DisplayArticle.display(fileName));
+
+					String[] q = textField.getText().split(" ");
+
+//					String title = DisplayArticle.displayTitle(fileName);
+					String text = DisplayArticle.display(fileName);
+//					textArea.setText(title+": "+text);
+					textArea.setText(text);
+					Highlighter highlighter = textArea.getHighlighter();
+					HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(
+							Color.pink);
+					for (String str : q) {
+						int p0 = text.toLowerCase().indexOf(str);
+						int p1 = p0 + str.trim().length();
+						try {
+							highlighter.addHighlight(p0, p1, painter);
+						} catch (BadLocationException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 		});
@@ -91,15 +120,16 @@ public class SearchUI {
 		JButton btnNewButton = new JButton(" Search ");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				listModel.removeAllElements();
+				list.setModel(listModel);
 				try {
 					results = Search.search(textField.getText());
 					listModel.removeAllElements();
 					for (int i = 0; i < results.size(); i++) {
-						
+
 						listModel.addElement(results.get(i).trim());
-						
+
 					}
-//					list.clearSelection();
 					list.setModel(listModel);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -108,12 +138,9 @@ public class SearchUI {
 		});
 		panel.add(btnNewButton);
 
-//		JPanel panel_1 = new JPanel();
-		frame.getContentPane().add(list, BorderLayout.WEST);
+		frame.getContentPane().add(scrollPane, BorderLayout.WEST);
 
-//		panel_1.add(list);
-
-		frame.getContentPane().add(textArea, BorderLayout.EAST);
+		frame.getContentPane().add(scrollPane2, BorderLayout.EAST);
 	}
 
 }
