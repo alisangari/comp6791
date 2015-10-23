@@ -11,7 +11,7 @@ import domain.Posting;
 
 public class ExtractArticles {
 
-	private static void main(String[] args) {
+	public static void main(String[] args) {
 		firstAct(); // pre-processing of documents and splitting them into
 		// individual random access files.
 	}
