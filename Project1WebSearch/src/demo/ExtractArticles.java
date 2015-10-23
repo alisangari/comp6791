@@ -18,7 +18,7 @@ public class ExtractArticles {
 
 	/**
 	 * Reads all raw files, extracts all articles from them, and saves each
-	 * article (as an object) separately into a file.
+	 * article (as a Posting object) separately into a file.
 	 */
 	private static void firstAct() {
 		ArrayList<String> fileNames = GeneralFile
@@ -31,9 +31,6 @@ public class ExtractArticles {
 				RandomAccessFile.write(posting,
 						contract.Constants.DOCUMENT_LOCATION_ON_DISK,
 						new Integer(posting.id).toString());
-				// RandomAccessFile.read(
-				// contants.Constants.DOCUMENT_LOCATION_ON_DISK,
-				// new Integer(posting.id).toString());
 			}
 		}
 

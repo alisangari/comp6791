@@ -6,12 +6,10 @@ import domain.Posting;
 
 public class DisplayArticle {
 
-	public static void main(String[] args) {
-	}
-
+	/**
+	 * given a document id, this method returns the article for security issue.
+	 */
 	public static String display(String fileName) {
-		// String fileName = "100";
-
 		Object obj = RandomAccessFile.read(Constants.DOCUMENT_LOCATION_ON_DISK,
 				fileName);
 		if (obj instanceof Posting) {
