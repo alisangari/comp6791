@@ -33,11 +33,11 @@ public class Search {
 						+ Constants.KEY_VALUE_SEPARATOR);
 				if (arr1[0].equalsIgnoreCase(searchQuery[i])) {
 					lists.add(Strings.getDocIdsFromString(arr1[1]));
-//					 System.out.println(arr1[1]);
-//					for(String str:Strings.getDocIdsFromString(arr1[1])){
-//						System.out.print(str+"-");
-//					}
-//					System.out.println();
+					// System.out.println(arr1[1]);
+					// for(String str:Strings.getDocIdsFromString(arr1[1])){
+					// System.out.print(str+"-");
+					// }
+					// System.out.println();
 					reader1.close();
 					break;
 				}
@@ -45,7 +45,7 @@ public class Search {
 			}
 		}
 		ArrayList<String> commons = getResults(lists);
-//		 System.out.println("commons: " + commons);
+		// System.out.println("commons: " + commons);
 		return commons;
 	}
 
@@ -59,12 +59,15 @@ public class Search {
 			}
 			arrLists.add((ArrayList<String>) list);
 		}
+		if (arrLists != null) {
+			ArrayList<String> commons = arrLists.get(0);
 
-		ArrayList<String> commons = arrLists.get(0);
-		for (int i = 1; i < arrLists.size(); i++) {
-			commons.retainAll(new HashSet<String>(arrLists.get(i)));
+			for (int i = 1; i < arrLists.size(); i++) {
+				commons.retainAll(new HashSet<String>(arrLists.get(i)));
+			}
+			return commons;
 		}
-		return commons;
+		return new ArrayList<String>();
 	}
 
 }

@@ -1,5 +1,6 @@
 package utility;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Strings {
@@ -44,10 +45,17 @@ public class Strings {
 		return str;
 	}
 
-	public static HashSet<String> tokenize(String[] terms) {
-		HashSet<String> tokens = new HashSet<String>();
+	public static HashMap<String,Integer> tokenize(String[] terms) {
+		HashMap<String,Integer> tokens = new HashMap<String,Integer>();
 		for (String str : terms) {
-			tokens.add(str);
+			if(tokens.containsKey(str)){
+				int frequency = tokens.get(str) +1;
+				tokens.put(str, frequency);
+			}
+			else{
+				tokens.put(str, 1);
+			}
+//			tokens.add(str);
 		}
 		return tokens;
 	}
