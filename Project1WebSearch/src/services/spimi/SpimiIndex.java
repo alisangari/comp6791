@@ -71,7 +71,7 @@ public class SpimiIndex {
 		for (Map.Entry<String, Integer> token : tokens.entrySet()) {
 			ArrayList<DocIdFrequencyPair> docIdFrequencyPairs = new ArrayList<DocIdFrequencyPair>();
 			if (invertedIndex.containsKey(token.getKey())) {
-				docIdFrequencyPairs = invertedIndex.get(token);
+				docIdFrequencyPairs = invertedIndex.get(token.getKey());
 			}
 			docIdFrequencyPairs.add(new DocIdFrequencyPair (docId, token.getValue()));
 			invertedIndex.put(token.getKey(), docIdFrequencyPairs);

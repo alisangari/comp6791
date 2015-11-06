@@ -6,6 +6,7 @@ public class DocIdFrequencyPair {
 
 	private int docid;
 	private int frequency;
+	private final String docId_TermFrequency_separator = ";";
 
 	public DocIdFrequencyPair() {
 		super();
@@ -15,6 +16,13 @@ public class DocIdFrequencyPair {
 		super();
 		this.docid = docid;
 		this.frequency = frequency;
+	}
+
+	public DocIdFrequencyPair(String stringPair) {
+		super();
+		String[] pair = stringPair.split(docId_TermFrequency_separator);
+		this.docid = new Integer(pair[0]).intValue();
+		this.frequency = new Integer(pair[1]).intValue();
 	}
 
 	public int getDocid() {
@@ -35,7 +43,7 @@ public class DocIdFrequencyPair {
 
 	@Override
 	public String toString() {
-		return "(" + docid + "," + frequency + ")";
+		return "(" + docid + docId_TermFrequency_separator + frequency + ")";
 	}
 
 }

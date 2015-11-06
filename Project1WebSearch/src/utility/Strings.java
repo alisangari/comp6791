@@ -3,16 +3,30 @@ package utility;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import domain.DocIdFrequencyPair;
+
 public class Strings {
 	
-	public static String[] getDocIdsFromString(String str){
+//	public static String[] getDocIdsFromString(String str){
+//		str = str.replaceAll("\\[", "");
+//		str = str.replaceAll("\\]", "");
+//		String[] ids = str.split(",");
+//		for(int i=0; i<ids.length; i++){
+//			ids[i] = ids[i].trim();
+//		}
+//		return ids;
+//	}
+
+	public static DocIdFrequencyPair[] getDocidTermfrequenciesFromString(String str){
 		str = str.replaceAll("\\[", "");
 		str = str.replaceAll("\\]", "");
+		DocIdFrequencyPair[] res;
 		String[] ids = str.split(",");
+		res = new DocIdFrequencyPair[10];
 		for(int i=0; i<ids.length; i++){
-			ids[i] = ids[i].trim();
+			res[i] = new DocIdFrequencyPair(ids[i].trim());
 		}
-		return ids;
+		return res;
 	}
 
 	public static String[] cleanse(String[] terms) {

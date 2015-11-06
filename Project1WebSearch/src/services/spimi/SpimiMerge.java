@@ -137,12 +137,12 @@ public class SpimiMerge {
 		TreeSet<String> vals = new TreeSet<>();
 		if (valArr1[0] != null) {
 			for (String val : valArr1) {
-				vals.add(val);
+				vals.add(val.trim());
 			}
 		}
 		if (valArr2[0] != null) {
 			for (String val : valArr2) {
-				vals.add(val);
+				vals.add(val.trim());
 			}
 		}
 		ArrayList<String> res = new ArrayList<>();

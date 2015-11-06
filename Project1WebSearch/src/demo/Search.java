@@ -8,6 +8,7 @@ import java.util.HashSet;
 
 import utility.Strings;
 import contract.Constants;
+import domain.DocIdFrequencyPair;
 
 public class Search {
 
@@ -18,7 +19,8 @@ public class Search {
 		// String searchStr = "jimmy carter";
 		String[] searchQuery = searchStr.split(" ");
 
-		ArrayList<String[]> lists = new ArrayList<>();
+//		ArrayList<String[]> lists = new ArrayList<>();
+		ArrayList<DocIdFrequencyPair[]> lists = new ArrayList<>();
 
 		String dirMerged = Constants.MERGED_INDEX_LOCATION_ON_DISK;
 		String mergedFileName = "merged";
@@ -32,7 +34,9 @@ public class Search {
 				String[] arr1 = line1.split("\\"
 						+ Constants.KEY_VALUE_SEPARATOR);
 				if (arr1[0].equalsIgnoreCase(searchQuery[i])) {
-					lists.add(Strings.getDocIdsFromString(arr1[1]));
+					
+//					lists.add(Strings.getDocIdsFromString(arr1[1]));
+					lists.add(Strings.getDocidTermfrequenciesFromString(arr1[1]));
 //					 System.out.println(arr1[1]);
 //					for(String str:Strings.getDocIdsFromString(arr1[1])){
 //						System.out.print(str+"-");
@@ -44,7 +48,8 @@ public class Search {
 				line1 = reader1.readLine();
 			}
 		}
-		ArrayList<String> commons = getResults(lists);
+//		ArrayList<String> commons = getResults(lists);
+		ArrayList<String> commons = getResults(lists);//***** just commons or all?
 //		 System.out.println("commons: " + commons);
 		return commons;
 	}
