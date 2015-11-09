@@ -26,12 +26,13 @@ import javax.swing.text.Highlighter.HighlightPainter;
 
 import demo.DisplayArticle;
 import demo.Search;
+import domain.DocIdFrequencyPair;
 
 public class SearchUI {
 
 	private JFrame frame;
 	private JTextField textField;
-	private ArrayList<String> results;
+	private ArrayList<DocIdFrequencyPair> results;
 
 	/**
 	 * Launch the application.
@@ -127,7 +128,7 @@ public class SearchUI {
 					listModel.removeAllElements();
 					for (int i = 0; i < results.size(); i++) {
 
-						listModel.addElement(results.get(i).trim());
+						listModel.addElement(results.get(i).toString());
 
 					}
 					list.setModel(listModel);

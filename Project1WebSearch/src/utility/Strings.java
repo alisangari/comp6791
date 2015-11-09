@@ -22,8 +22,10 @@ public class Strings {
 		str = str.replaceAll("\\]", "");
 		DocIdFrequencyPair[] res;
 		String[] ids = str.split(",");
-		res = new DocIdFrequencyPair[10];
+		res = new DocIdFrequencyPair[ids.length];
 		for(int i=0; i<ids.length; i++){
+			ids[i] = ids[i].replaceAll("[(]", "");
+			ids[i] = ids[i].replaceAll("[)]", "");
 			res[i] = new DocIdFrequencyPair(ids[i].trim());
 		}
 		return res;

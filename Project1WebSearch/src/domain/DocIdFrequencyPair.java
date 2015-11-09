@@ -1,6 +1,6 @@
 package domain;
 
-public class DocIdFrequencyPair {
+public class DocIdFrequencyPair implements Comparable<DocIdFrequencyPair> {
 	// DocIdFrequencyPair: [doc id,term frequency]
 	// term -> DocIdFrequencyPair, DocIdFrequencyPair, DocIdFrequencyPair
 
@@ -44,6 +44,15 @@ public class DocIdFrequencyPair {
 	@Override
 	public String toString() {
 		return "(" + docid + docId_TermFrequency_separator + frequency + ")";
+	}
+
+	@Override
+	public int compareTo(DocIdFrequencyPair o) {
+		return new Integer(this.docid).compareTo(new Integer(o.docid));
+	}
+
+	public boolean equals(DocIdFrequencyPair o) {
+		return this.docid == o.docid;
 	}
 
 }
