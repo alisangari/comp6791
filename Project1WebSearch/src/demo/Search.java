@@ -57,15 +57,15 @@ public class Search {
 		ArrayList<DocIdBM25Relevance> combined = new ArrayList<DocIdBM25Relevance>();
 		for (int i = 0; i < lists.size(); i++) {
 			combined = combine(combined, lists.get(i));
-			// combined = order(combined);
+			combined = order(combined);
 
 		}
 		return combined;
 	}
 
-	private static ArrayList<DocIdFrequencyPair> order(
-			ArrayList<DocIdFrequencyPair> combined) {
-		ArrayList<DocIdFrequencyPair> sorted = new ArrayList<DocIdFrequencyPair>();
+	private static ArrayList<DocIdBM25Relevance> order(
+			ArrayList<DocIdBM25Relevance> combined) {
+		ArrayList<DocIdBM25Relevance> sorted = new ArrayList<DocIdBM25Relevance>();
 		Collections.sort(combined);
 		for (int i = combined.size() - 1; i >= 0; i--) {
 			sorted.add(combined.get(i));
