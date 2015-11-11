@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -93,26 +95,44 @@ public class SearchUI {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				if (!arg0.getValueIsAdjusting()) {
-					String fileName = list.getSelectedValue().toString();
-
+					String temp = list.getSelectedValue().toString();
+					temp = temp.replaceAll("[(]", "");
+					temp = temp.replaceAll("[)]", "");
+					String fileName = new Integer(new DocIdFrequencyPair(temp)
+							.getDocid()).toString();
 					String[] q = textField.getText().split(" ");
 
-//					String title = DisplayArticle.displayTitle(fileName);
+					// String title = DisplayArticle.displayTitle(fileName);
 					String text = DisplayArticle.display(fileName);
-//					textArea.setText(title+": "+text);
+					// textArea.setText(title+": "+text);
 					textArea.setText(text);
 					Highlighter highlighter = textArea.getHighlighter();
 					HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(
 							Color.pink);
 					for (String str : q) {
-						int p0 = text.toLowerCase().indexOf(str);
-						int p1 = p0 + str.trim().length();
-						try {
-							highlighter.addHighlight(p0, p1, painter);
-						} catch (BadLocationException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+
+						ArrayList<Integer> positions = new ArrayList();
+						Pattern p = Pattern.compile(str.toLowerCase());  // insert your pattern here
+						Matcher m = p.matcher(text.toLowerCase());
+						while (m.find()) {
+//						   positions.add(m.start());
+							try {
+								highlighter.addHighlight(m.start(), m.start()+str.length(), painter);
+							} catch (BadLocationException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
+						
+						
+//						int p0 = text.toLowerCase().indexOf(str);
+//						int p1 = p0 + str.trim().length();
+//						try {
+//							highlighter.addHighlight(p0, p1, painter);
+//						} catch (BadLocationException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
 					}
 				}
 			}

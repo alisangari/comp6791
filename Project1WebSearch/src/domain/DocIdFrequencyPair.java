@@ -48,7 +48,7 @@ public class DocIdFrequencyPair implements Comparable<DocIdFrequencyPair> {
 
 	@Override
 	public int compareTo(DocIdFrequencyPair o) {
-		return new Integer(this.docid).compareTo(new Integer(o.docid));
+		return new Integer(this.frequency).compareTo(new Integer(o.frequency));
 	}
 
 	public boolean equals(DocIdFrequencyPair o) {

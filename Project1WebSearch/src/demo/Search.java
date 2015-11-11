@@ -27,7 +27,6 @@ public class Search {
 		// String searchStr = "jimmy carter";
 		String[] searchQuery = searchStr.split(" ");
 
-		// ArrayList<String[]> lists = new ArrayList<>();
 		ArrayList<DocIdFrequencyPair[]> lists = new ArrayList<>();
 
 		String dirMerged = Constants.MERGED_INDEX_LOCATION_ON_DISK;
@@ -43,30 +42,81 @@ public class Search {
 						+ Constants.KEY_VALUE_SEPARATOR);
 				if (arr1[0].equalsIgnoreCase(searchQuery[i])) {
 
-					// lists.add(Strings.getDocIdsFromString(arr1[1]));
 					lists.add(Strings
 							.getDocidTermfrequenciesFromString(arr1[1]));
-					// System.out.println(arr1[1]);
-					// for(String str:Strings.getDocIdsFromString(arr1[1])){
-					// System.out.print(str+"-");
-					// }
-					// System.out.println();
 					reader1.close();
 					break;
 				}
 				line1 = reader1.readLine();
 			}
 		}
-		// ArrayList<String> commons = getResults(lists);
-		ArrayList<DocIdFrequencyPair> commons = new ArrayList<DocIdFrequencyPair>();
-		for(DocIdFrequencyPair pair: lists.get(0)){
-			//BM25.orderByRelevance(lists);
-			commons.add(pair);
+		ArrayList<DocIdFrequencyPair> combined = new ArrayList<DocIdFrequencyPair>();
+		for (int i = 0; i < lists.size(); i++) {
+			combined = combine(combined, lists.get(i));
+			combined = order(combined);
+			// for (DocIdFrequencyPair pair : lists.get(i)) {
+			// // BM25.orderByRelevance(lists);
+			// combined.add(pair);
+			// }
 		}
-		// System.out.println("commons: " + commons);
-		return commons;
+		return combined;
 	}
 
+	private static ArrayList<DocIdFrequencyPair> order(
+			ArrayList<DocIdFrequencyPair> combined) {
+		ArrayList<DocIdFrequencyPair> sorted = new ArrayList<DocIdFrequencyPair>();
+		Collections.sort(combined);
+		for(int i=combined.size()-1; i>=0; i--){
+			sorted.add(combined.get(i));
+		}
+		return sorted;
+//		ArrayList<DocIdFrequencyPair> sorted
+//		
+//		int max = 0;
+//		int maxIndx = 0;
+//		for(int i=0; i<combined.size(); i++){
+//			if(combined.get(i).getFrequency()>)
+//		}
+//		return sorted;
+	}
 
+	private static ArrayList<DocIdFrequencyPair> combine(
+			ArrayList<DocIdFrequencyPair> combined,
+			DocIdFrequencyPair[] docIdFrequencyPairs) {
+
+		for (DocIdFrequencyPair pair : docIdFrequencyPairs) {
+			if (!contains(combined, pair)) {
+				combined.add(pair);
+			} else {
+				update(combined, pair);
+			}
+		}
+		return combined;
+	}
+
+	private static ArrayList<DocIdFrequencyPair> update(
+			ArrayList<DocIdFrequencyPair> combined, DocIdFrequencyPair pair) {
+
+		for (int i = 0; i < combined.size(); i++) {
+			if (combined.get(i).getDocid() == pair.getDocid()) {
+				DocIdFrequencyPair p = combined.get(i);
+				p.setFrequency(p.getFrequency() + pair.getFrequency());
+				combined.set(i, p);
+				break;
+			}
+		}
+		return combined;
+	}
+
+	private static boolean contains(ArrayList<DocIdFrequencyPair> combined,
+			DocIdFrequencyPair pair) {
+
+		for (int i = 0; i < combined.size(); i++) {
+			if (combined.get(i).getDocid() == pair.getDocid()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
