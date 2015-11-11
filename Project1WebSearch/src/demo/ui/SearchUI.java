@@ -28,13 +28,14 @@ import javax.swing.text.Highlighter.HighlightPainter;
 
 import demo.DisplayArticle;
 import demo.Search;
+import domain.DocIdBM25Relevance;
 import domain.DocIdFrequencyPair;
 
 public class SearchUI {
 
 	private JFrame frame;
 	private JTextField textField;
-	private ArrayList<DocIdFrequencyPair> results;
+	private ArrayList<DocIdBM25Relevance> results;
 
 	/**
 	 * Launch the application.
@@ -112,10 +113,9 @@ public class SearchUI {
 					for (String str : q) {
 
 						ArrayList<Integer> positions = new ArrayList();
-						Pattern p = Pattern.compile(str.toLowerCase());  // insert your pattern here
+						Pattern p = Pattern.compile(str.toLowerCase());  // pattern is defined here
 						Matcher m = p.matcher(text.toLowerCase());
 						while (m.find()) {
-//						   positions.add(m.start());
 							try {
 								highlighter.addHighlight(m.start(), m.start()+str.length(), painter);
 							} catch (BadLocationException e) {
@@ -123,16 +123,6 @@ public class SearchUI {
 								e.printStackTrace();
 							}
 						}
-						
-						
-//						int p0 = text.toLowerCase().indexOf(str);
-//						int p1 = p0 + str.trim().length();
-//						try {
-//							highlighter.addHighlight(p0, p1, painter);
-//						} catch (BadLocationException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
 					}
 				}
 			}
