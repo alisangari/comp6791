@@ -5,6 +5,7 @@ public class Constants {
 	public final static String DOCUMENT_LOCATION_ON_DISK = "res/docs/";
 	public final static String INDIVIDUAL_INDEXES_LOCATION_ON_DISK = "res/indiv_indexes/";
 	public final static String MERGED_INDEX_LOCATION_ON_DISK = "res/merged_index/";
+	public final static String STOP_WORDS_LOCATION_ON_DISK = "res/";
 	
 	public final static String KEY_VALUE_SEPARATOR = "|";
 	

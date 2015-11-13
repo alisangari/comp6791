@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 
 import contract.Constants;
 
@@ -23,6 +24,20 @@ public class TextFile {
 		}
 
 		return content.toString();
+	}
+
+	public static HashSet<String> readAll(String path) {
+		HashSet<String> content = new HashSet<>();
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				content.add(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return content;
 	}
 
 	public static boolean append(String destination, String fileName,
@@ -46,8 +61,7 @@ public class TextFile {
 		return true;
 	}
 
-	public static boolean write(String destination, String fileName,
-			String data) {
+	public static boolean write(String destination, String fileName, String data) {
 		try {
 			File dir = new File(destination);
 			if (!dir.exists()) {
@@ -55,7 +69,8 @@ public class TextFile {
 			}
 
 			String fname = destination + fileName;
-			FileWriter fw = new FileWriter(fname, false); // the true will append
+			FileWriter fw = new FileWriter(fname, false); // the true will
+															// append
 															// the new data
 			fw.write(data);
 			fw.close();
@@ -64,6 +79,6 @@ public class TextFile {
 			return false;
 		}
 		return true;
-		
+
 	}
 }

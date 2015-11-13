@@ -11,7 +11,7 @@ import utility.Strings;
 import contract.Constants;
 import domain.DocIdFrequencyPair;
 
-public class Search {
+public class Search_Basic {
 
 	public static void main(String[] args) {
 		try {

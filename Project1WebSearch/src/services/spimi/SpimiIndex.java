@@ -50,7 +50,7 @@ public class SpimiIndex {
 		TreeMap<String, ArrayList<DocIdFrequencyPair>> invertedIndex = new TreeMap<String, ArrayList<DocIdFrequencyPair>>();
 		// extract terms
 		for (Posting posting : postings) {
-			posting.body = Strings.normalize(posting.body, true, true, true);
+			posting.body = Strings.normalize(posting.body, true, true, true, true);
 			String[] terms = posting.body.split(" ");
 			terms = Strings.cleanse(terms);
 			HashMap<String,Integer> tokens = Strings.tokenize(terms);
