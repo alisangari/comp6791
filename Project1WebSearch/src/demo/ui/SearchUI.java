@@ -26,16 +26,16 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 
+import services.stopwords.StopWordDictionary;
+import utility.Strings;
 import demo.DisplayArticle;
 import demo.Search;
-import domain.DocIdBM25Relevance;
-import domain.DocIdFrequencyPair;
 
 public class SearchUI {
 
 	private JFrame frame;
 	private JTextField textField;
-	private ArrayList<DocIdBM25Relevance> results;
+	private ArrayList<String> results;
 
 	/**
 	 * Launch the application.
@@ -99,12 +99,14 @@ public class SearchUI {
 					String temp = list.getSelectedValue().toString();
 					temp = temp.replaceAll("[(]", "");
 					temp = temp.replaceAll("[)]", "");
-					String fileName = new Integer(new DocIdFrequencyPair(temp)
-							.getDocid()).toString();
-					String[] q = textField.getText().split(" ");
+//					String fileName = GetArticle.get(temp, type);
+					String tStr = textField.getText();
+					tStr = Strings.normalize(tStr, true, false, false);
+					String[] q = tStr.split(" ");
+					q = StopWordDictionary.getInstance().removeStopWords(q);
 
 					// String title = DisplayArticle.displayTitle(fileName);
-					String text = DisplayArticle.display(fileName);
+					String text = DisplayArticle.display(temp, 1);
 					// textArea.setText(title+": "+text);
 					textArea.setText(text);
 					Highlighter highlighter = textArea.getHighlighter();
@@ -112,14 +114,12 @@ public class SearchUI {
 							Color.pink);
 					for (String str : q) {
 
-						ArrayList<Integer> positions = new ArrayList();
-						Pattern p = Pattern.compile(str.toLowerCase());  // pattern is defined here
+						Pattern p = Pattern.compile("\\b" + str.toLowerCase()+"\\b.");  // pattern is defined here
 						Matcher m = p.matcher(text.toLowerCase());
 						while (m.find()) {
 							try {
 								highlighter.addHighlight(m.start(), m.start()+str.length(), painter);
 							} catch (BadLocationException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}

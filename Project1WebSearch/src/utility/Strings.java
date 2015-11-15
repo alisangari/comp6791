@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import services.stopwords.StopWordDictionary;
-import domain.DocIdFrequencyPair;
+import domain.DocIdTermFrequencyPair;
 
 public class Strings {
 
@@ -20,17 +20,17 @@ public class Strings {
 	// return ids;
 	// }
 
-	public static DocIdFrequencyPair[] getDocidTermfrequenciesFromString(
+	public static DocIdTermFrequencyPair[] getDocidTermfrequenciesFromString(
 			String str) {
 		str = str.replaceAll("\\[", "");
 		str = str.replaceAll("\\]", "");
-		DocIdFrequencyPair[] res;
+		DocIdTermFrequencyPair[] res;
 		String[] ids = str.split(",");
-		res = new DocIdFrequencyPair[ids.length];
+		res = new DocIdTermFrequencyPair[ids.length];
 		for (int i = 0; i < ids.length; i++) {
 			ids[i] = ids[i].replaceAll("[(]", "");
 			ids[i] = ids[i].replaceAll("[)]", "");
-			res[i] = new DocIdFrequencyPair(ids[i].trim());
+			res[i] = new DocIdTermFrequencyPair(ids[i].trim());
 		}
 		return res;
 	}
@@ -52,18 +52,12 @@ public class Strings {
 	}
 
 	public static String normalize(String str, boolean toLower,
-			boolean removeDigits, boolean removeNonAlphaNumeric, boolean removeAllStopWords) {
+			boolean removeDigits, boolean removeNonAlphaNumeric) {
 		if (removeNonAlphaNumeric) {
 			str = str.replaceAll("[,._\\-()\"'&#;<>/$*+:]", " ");
 		}
 		if (removeDigits) {
 			str = str.replaceAll("[0-9]", " ");
-		}
-		if(removeAllStopWords{
-			for(String str: StopWordDictionary.getInstance().getDictionary() ){
-			Pattern p = Pattern.compile(str);  // pattern is defined here
-			Matcher m = p.matcher(str);
-			}
 		}
 		if (toLower) {
 			str = str.toLowerCase();
@@ -74,13 +68,14 @@ public class Strings {
 	public static HashMap<String, Integer> tokenize(String[] terms) {
 		HashMap<String, Integer> tokens = new HashMap<String, Integer>();
 		for (String str : terms) {
-			if (tokens.containsKey(str)) {
-				int frequency = tokens.get(str) + 1;
-				tokens.put(str, frequency);
-			} else {
-				tokens.put(str, 1);
+			if (!StopWordDictionary.getInstance().contains(str)) {
+				if (tokens.containsKey(str)) {
+					int frequency = tokens.get(str) + 1;
+					tokens.put(str, frequency);
+				} else {
+					tokens.put(str, 1);
+				}
 			}
-			// tokens.add(str);
 		}
 		return tokens;
 	}

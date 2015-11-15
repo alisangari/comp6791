@@ -1,10 +1,11 @@
-package services.bm25;
+package services.sort.bm25;
 
 import java.util.ArrayList;
 
 import utility.file.GeneralFile;
 import utility.file.RandomAccessFile;
 import contract.Constants;
+import domain.DocIdTermFrequencyPair;
 import domain.Posting;
 
 public class BM25 {
@@ -12,14 +13,14 @@ public class BM25 {
 	private static BM25 instance = null;
 	private int L_ave;
 	private int N;
-	private int k1;
+	private float k1;
 	private float b;
 
 	private BM25() {
 		L_ave = calc_L_ave();
 		N = calcN();
-		k1 = 0;
-		b = 0;
+		k1 = 1.2f;
+		b = 0.35f;
 	}
 
 	public static BM25 getInstance() {
@@ -68,7 +69,7 @@ public class BM25 {
 		N = n;
 	}
 
-	public int getK1() {
+	public float getK1() {
 		return k1;
 	}
 
@@ -83,5 +84,4 @@ public class BM25 {
 	public void setB(float b) {
 		this.b = b;
 	}
-
 }

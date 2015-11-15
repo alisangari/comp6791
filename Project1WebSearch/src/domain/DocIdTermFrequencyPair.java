@@ -1,6 +1,6 @@
 package domain;
 
-public class DocIdFrequencyPair implements Comparable<DocIdFrequencyPair> {
+public class DocIdTermFrequencyPair implements Comparable<DocIdTermFrequencyPair> {
 	// DocIdFrequencyPair: [doc id,term frequency]
 	// term -> DocIdFrequencyPair, DocIdFrequencyPair, DocIdFrequencyPair
 
@@ -8,17 +8,17 @@ public class DocIdFrequencyPair implements Comparable<DocIdFrequencyPair> {
 	private int frequency;
 	private final String docId_TermFrequency_separator = ";";
 
-	public DocIdFrequencyPair() {
+	public DocIdTermFrequencyPair() {
 		super();
 	}
 
-	public DocIdFrequencyPair(int docid, int frequency) {
+	public DocIdTermFrequencyPair(int docid, int frequency) {
 		super();
 		this.docid = docid;
 		this.frequency = frequency;
 	}
 
-	public DocIdFrequencyPair(String stringPair) {
+	public DocIdTermFrequencyPair(String stringPair) {
 		super();
 		String[] pair = stringPair.split(docId_TermFrequency_separator);
 		this.docid = new Integer(pair[0]).intValue();
@@ -47,11 +47,11 @@ public class DocIdFrequencyPair implements Comparable<DocIdFrequencyPair> {
 	}
 
 	@Override
-	public int compareTo(DocIdFrequencyPair o) {
+	public int compareTo(DocIdTermFrequencyPair o) {
 		return new Integer(this.frequency).compareTo(new Integer(o.frequency));
 	}
 
-	public boolean equals(DocIdFrequencyPair o) {
+	public boolean equals(DocIdTermFrequencyPair o) {
 		return this.docid == o.docid;
 	}
 

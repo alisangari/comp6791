@@ -10,7 +10,7 @@ import utility.file.GeneralFile;
 import utility.file.RandomAccessFile;
 import utility.file.TextFile;
 import contract.Constants;
-import domain.DocIdFrequencyPair;
+import domain.DocIdTermFrequencyPair;
 import domain.Posting;
 
 public class SpimiIndex {
@@ -47,10 +47,10 @@ public class SpimiIndex {
 
 	private static void spimiIndex(ArrayList<Posting> postings,
 			int indxFileCounter) {
-		TreeMap<String, ArrayList<DocIdFrequencyPair>> invertedIndex = new TreeMap<String, ArrayList<DocIdFrequencyPair>>();
+		TreeMap<String, ArrayList<DocIdTermFrequencyPair>> invertedIndex = new TreeMap<String, ArrayList<DocIdTermFrequencyPair>>();
 		// extract terms
 		for (Posting posting : postings) {
-			posting.body = Strings.normalize(posting.body, true, true, true, true);
+			posting.body = Strings.normalize(posting.body, true, true, true);
 			String[] terms = posting.body.split(" ");
 			terms = Strings.cleanse(terms);
 			HashMap<String,Integer> tokens = Strings.tokenize(terms);
@@ -65,27 +65,27 @@ public class SpimiIndex {
 
 	}
 
-	private static TreeMap<String, ArrayList<DocIdFrequencyPair>> updateInvertedIndex(
-			TreeMap<String, ArrayList<DocIdFrequencyPair>> invertedIndex,
+	private static TreeMap<String, ArrayList<DocIdTermFrequencyPair>> updateInvertedIndex(
+			TreeMap<String, ArrayList<DocIdTermFrequencyPair>> invertedIndex,
 			HashMap<String,Integer> tokens, int docId) {
 		for (Map.Entry<String, Integer> token : tokens.entrySet()) {
-			ArrayList<DocIdFrequencyPair> docIdFrequencyPairs = new ArrayList<DocIdFrequencyPair>();
+			ArrayList<DocIdTermFrequencyPair> docIdFrequencyPairs = new ArrayList<DocIdTermFrequencyPair>();
 			if (invertedIndex.containsKey(token.getKey())) {
 				docIdFrequencyPairs = invertedIndex.get(token.getKey());
 			}
-			docIdFrequencyPairs.add(new DocIdFrequencyPair (docId, token.getValue()));
+			docIdFrequencyPairs.add(new DocIdTermFrequencyPair (docId, token.getValue()));
 			invertedIndex.put(token.getKey(), docIdFrequencyPairs);
 		}
 		return invertedIndex;
 	}
 
 	private static void writeInvertedIndexToFile(
-			TreeMap<String, ArrayList<DocIdFrequencyPair>> invertedIndex,
+			TreeMap<String, ArrayList<DocIdTermFrequencyPair>> invertedIndex,
 			int indxFileCounter) {
 		StringBuilder data = new StringBuilder();
-		for (Map.Entry<String, ArrayList<DocIdFrequencyPair>> entry : invertedIndex.entrySet()) {
+		for (Map.Entry<String, ArrayList<DocIdTermFrequencyPair>> entry : invertedIndex.entrySet()) {
 			String key = (String) entry.getKey();
-			ArrayList<DocIdFrequencyPair> value = (ArrayList<DocIdFrequencyPair>) entry.getValue();
+			ArrayList<DocIdTermFrequencyPair> value = (ArrayList<DocIdTermFrequencyPair>) entry.getValue();
 			data.append(key + Constants.KEY_VALUE_SEPARATOR + value.toString());
 			data.append(System.getProperty("line.separator"));
 		}//I expect ->    term | (doc,freq) , (doc,freq) ,...
