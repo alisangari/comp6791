@@ -7,9 +7,12 @@ public class Constants {
 	public final static String MERGED_INDEX_LOCATION_ON_DISK = "res/merged_index/";
 	public final static String STOP_WORDS_LOCATION_ON_DISK = "res/";
 	public final static String AFINN_DIC_LOCATION_ON_DISK = "res/";
-	public final static String DEPTS_LOCATION_ON_DISK = "res/departments/";
+//	public final static String DEPTS_LOCATION_ON_DISK = "res/departments/";
+	public final static String DEPTS_LOCATION_ON_DISK = "res/HTML and Index/encs.concordia.ca/";
+	public final static String DEPT_CSSE = "computer-science-software-engineering";
+	public final static String DEPT_EE = "electrical-computer";
 	
-	public final static String DEPARTMENTS_LOCATION_ON_DISK = "res/departments";
+//	public final static String DEPARTMENTS_LOCATION_ON_DISK = "res/departments";
 	
 	public final static String KEY_VALUE_SEPARATOR = "|";
 	

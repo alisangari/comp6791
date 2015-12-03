@@ -41,6 +41,20 @@ public class TextFile {
 
 		return content.toString();
 	}
+	
+	public static String read(File file) {
+		StringBuilder content = new StringBuilder();
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				content.append(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return content.toString();
+	}
 
 	public static HashSet<String> readAll(String path) {
 		HashSet<String> content = new HashSet<>();

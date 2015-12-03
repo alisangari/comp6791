@@ -1,42 +1,46 @@
 package demo;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import services.sentiment.AFINN;
 import utility.file.GeneralFile;
 import utility.file.TextFile;
 import contract.Constants;
+import domain.DeptSentimentScorePair;
 
 public class SentimentScore {
 
 	public static void main(String[] args) {
-//		long startTime = System.currentTimeMillis();
 		AFINN afinn = AFINN.getInstance();
 		ArrayList<String> depts = new ArrayList<String>();
-		ArrayList<String> docs = new ArrayList<String>();
+		SortedSet<DeptSentimentScorePair> comparisonLookupTable = new TreeSet<DeptSentimentScorePair>();
+
 		depts = GeneralFile.getFilesList(Constants.DEPTS_LOCATION_ON_DISK);
 		for (String dept : depts) {
-			docs = GeneralFile.getFilesList(Constants.DEPTS_LOCATION_ON_DISK
-					+ dept);
-
+			ArrayList<File> docs = new ArrayList<File>();
+			GeneralFile.getAllFiles(Constants.DEPTS_LOCATION_ON_DISK + dept,
+					docs);
 			int totalSentimentScore = 0;
 			for (int i = 0; i < docs.size(); i++) {
-				String article = TextFile.read(Constants.DEPTS_LOCATION_ON_DISK
-						+ dept + "/", docs.get(i));
-				int score = afinn.calcSentimentScore(article.split(" "));
-				totalSentimentScore += score;
+				if (docs.get(i).isFile()) {
+					String article = TextFile.read(docs.get(i));
+					int score = afinn.calcSentimentScore(article.split(" "));
+					totalSentimentScore += score;
+				}
+//				System.out.printf(
+//						"Total sentiment score for \"%s\" (%d pages) is %d\n",
+//						dept, docs.size(), totalSentimentScore);
 			}
-			System.out.printf("Total sentiment score for \"%s\" is %d\n", dept,
-					totalSentimentScore);
-			// long estimatedTime = System.currentTimeMillis() - startTime;
-			// String timeSpent = String.format(
-			// "%02d min, %02d sec",
-			// TimeUnit.MILLISECONDS.toMinutes(estimatedTime),
-			// TimeUnit.MILLISECONDS.toSeconds(estimatedTime)
-			// - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
-			// .toMinutes(estimatedTime)));
-			// System.out.println();
-			// System.out.println(timeSpent);
+			comparisonLookupTable.add(new DeptSentimentScorePair(dept, totalSentimentScore));
+		}
+		System.out.println("The most positive department is "+comparisonLookupTable.last());
+		for(DeptSentimentScorePair pair: comparisonLookupTable){
+			System.out.printf(
+					"Total sentiment score for \"%s\" is %d\n",
+					pair.getDept(), pair.getScore());
 		}
 	}
 }

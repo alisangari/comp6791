@@ -5,6 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import opennlp.tools.stemmer.PorterStemmer;
+
+import org.jsoup.Jsoup;
+import org.jsoup.examples.HtmlToPlainText;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import services.stopwords.StopWordDictionary;
 import domain.DocIdTermFrequencyPair;
 
@@ -88,5 +95,16 @@ public class Strings {
 			}
 		}
 		return tokens;
+	}
+	
+	public static String stripOutTags(String html){
+		StringBuilder sb = new StringBuilder();
+		Document doc = Jsoup.parse(html);
+		HtmlToPlainText htmlToPlainText = new HtmlToPlainText();
+		Elements elems = doc.getElementsByTag("body");
+		for(Element elem: elems){
+			sb.append(htmlToPlainText.getPlainText(elem));
+		}
+		return sb.toString();
 	}
 }
