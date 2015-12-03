@@ -35,6 +35,7 @@ public class Search {
 	public static ArrayList<String> search(String searchStr, int type)
 			throws IOException {
 		String[] searchQuery = searchStr.split(" ");
+		searchQuery = Strings.stem(searchQuery);
 		ArrayList<DocIdTermFrequencyPair[]> lists = new ArrayList<>();
 		String dirMerged = Constants.MERGED_INDEX_LOCATION_ON_DISK;
 		String mergedFileName = "merged";

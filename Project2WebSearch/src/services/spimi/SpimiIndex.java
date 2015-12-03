@@ -53,6 +53,7 @@ public class SpimiIndex {
 			posting.body = Strings.normalize(posting.body, true, true, true);
 			String[] terms = posting.body.split(" ");
 			terms = Strings.cleanse(terms);
+			terms = Strings.stem(terms);
 			HashMap<String,Integer> tokens = Strings.tokenize(terms);
 			// generate inverted index
 			invertedIndex = updateInvertedIndex(invertedIndex, tokens,

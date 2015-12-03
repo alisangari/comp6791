@@ -2,9 +2,9 @@ package utility;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Set;
 
+import opennlp.tools.stemmer.PorterStemmer;
 import services.stopwords.StopWordDictionary;
 import domain.DocIdTermFrequencyPair;
 
@@ -51,6 +51,16 @@ public class Strings {
 		return res;
 	}
 
+	public static String[] stem(String[] terms){
+		PorterStemmer stem = new PorterStemmer();
+		Set<String> stemmedTerms = new HashSet<>();
+		for(String str : terms){
+			stemmedTerms.add(stem.stem(str));
+		}
+		String[] res = new String[stemmedTerms.size()];
+		return stemmedTerms.toArray(res);
+	}
+	
 	public static String normalize(String str, boolean toLower,
 			boolean removeDigits, boolean removeNonAlphaNumeric) {
 		if (removeNonAlphaNumeric) {
