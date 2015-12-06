@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.swing.RowFilter.ComparisonType;
+
 import services.sentiment.AFINN;
 import utility.file.GeneralFile;
 import utility.file.TextFile;
@@ -18,15 +20,15 @@ public class SentimentScore {
 
 	public static void main(String[] args) {
 		indexedDocAnalysis();
-		System.out.println("====================");
-		directDocAnalysis();
+		// System.out.println("====================");
+		// directDocAnalysis();
 	}
 
 	private static void indexedDocAnalysis() {
 		AFINN afinn = AFINN.getInstance();
 		ArrayList<String> depts = new ArrayList<String>();
 		SortedSet<DeptSentimentScorePair> comparisonLookupTable = new TreeSet<DeptSentimentScorePair>();
-
+		DeptSentimentScorePair mysteryPages = new DeptSentimentScorePair();
 		depts = GeneralFile
 				.getFilesList(Constants.DEPTS_INDEX_LOCATION_ON_DISK);
 		for (String dept : depts) {
@@ -38,18 +40,18 @@ public class SentimentScore {
 				int score = afinn.sentimentScore((String) entry.getKey());
 				if (score != 0) {
 					int frequencySum = 0;
-//					System.out.println("word:" + (String) entry.getKey());
-//					System.out.println(">" + frequencySum);
+					// System.out.println("word:" + (String) entry.getKey());
+					// System.out.println(">" + frequencySum);
 					DocIdFrequencyPair[] pairs = (DocIdFrequencyPair[]) entry
 							.getValue();
 					for (int i = 0; i < pairs.length; i++) {
 						frequencySum += pairs[i].getFrequency();
-//						System.out.println("--" + frequencySum);
+						// System.out.println("--" + frequencySum);
 					}
-//					System.out.println("-->" + frequencySum);
-//					System.out.println("score-->" + score);
-//					System.out.println("score * frequencySum-->" + score
-//							* frequencySum);
+					// System.out.println("-->" + frequencySum);
+					// System.out.println("score-->" + score);
+					// System.out.println("score * frequencySum-->" + score
+					// * frequencySum);
 					totalSentimentScore += score * frequencySum;
 				}
 			}
@@ -63,8 +65,71 @@ public class SentimentScore {
 				+ comparisonLookupTable.last());
 		System.out.println();
 		for (DeptSentimentScorePair pair : comparisonLookupTable) {
-			System.out.printf("Total sentiment score for \"%s\" is %d\n",
-					pair.getDept(), pair.getScore());
+			if (pair.getDept().equalsIgnoreCase("mystery-pages")) {
+				mysteryPages = pair;
+			} else {
+				System.out.printf("Total sentiment score for \"%s\" is %d\n",
+						pair.getDept(), pair.getScore());
+			}
+		}
+		int upperBound = 1500;
+		int lowerBound = 1000;
+		negativeDepartments(comparisonLookupTable, lowerBound);
+		neutralDepartments(comparisonLookupTable, lowerBound, upperBound);
+		positiveDepartments(comparisonLookupTable, upperBound);
+
+		mysteryPagesClassification(mysteryPages, lowerBound, upperBound);
+
+	}
+
+	private static void mysteryPagesClassification(
+			DeptSentimentScorePair mysteryPages, int lowerBound, int upperBound) {
+		if (mysteryPages.getScore() <= lowerBound) {
+			System.out.println("\n" + mysteryPages.getDept()
+					+ " are classified as negative.");
+		} else if (mysteryPages.getScore() >= upperBound) {
+			System.out.println("\n" + mysteryPages.getDept()
+					+ " are classified as positive.");
+		} else {
+			System.out.println("\n" + mysteryPages.getDept()
+					+ " are classified as neutral.");
+		}
+	}
+
+	private static void negativeDepartments(
+			SortedSet<DeptSentimentScorePair> comparisonLookupTable,
+			int lowerBound) {
+		System.out.println("\nDepartments classified as negative:");
+		for (DeptSentimentScorePair pair : comparisonLookupTable) {
+			if (!pair.getDept().equalsIgnoreCase("mystery-pages")
+					&& pair.getScore() <= lowerBound) {
+				System.out.println(pair.getDept());
+			}
+		}
+	}
+
+	private static void neutralDepartments(
+			SortedSet<DeptSentimentScorePair> comparisonLookupTable,
+			int lowerBound, int upperBound) {
+		System.out.println("\nDepartments classified as neutral:");
+		for (DeptSentimentScorePair pair : comparisonLookupTable) {
+			if (!pair.getDept().equalsIgnoreCase("mystery-pages")
+					&& pair.getScore() >= lowerBound
+					&& pair.getScore() <= upperBound) {
+				System.out.println(pair.getDept());
+			}
+		}
+	}
+
+	private static void positiveDepartments(
+			SortedSet<DeptSentimentScorePair> comparisonLookupTable,
+			int upperBound) {
+		System.out.println("\nDepartments classified as positive:");
+		for (DeptSentimentScorePair pair : comparisonLookupTable) {
+			if (!pair.getDept().equalsIgnoreCase("mystery-pages")
+					&& pair.getScore() >= upperBound) {
+				System.out.println(pair.getDept());
+			}
 		}
 	}
 
