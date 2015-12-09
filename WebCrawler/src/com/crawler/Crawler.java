@@ -3,6 +3,9 @@ package com.crawler;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import contract.Constants;
+import utility.IdGenerator;
+import utility.file.TextFile;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -27,7 +30,8 @@ public class Crawler extends WebCrawler {
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();
 		return !FILTERS.matcher(href).matches()
-				&& (href.startsWith("http://www.concordia.ca/encs")|| href.startsWith("http://concordia.ca/encs"));
+				&& (href.startsWith("http://www.concordia.ca/encs") || href
+						.startsWith("http://concordia.ca/encs"));
 	}
 
 	/**
@@ -41,9 +45,16 @@ public class Crawler extends WebCrawler {
 
 		if (page.getParseData() instanceof HtmlParseData) {
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-			String text = htmlParseData.getText();
-			String html = htmlParseData.getHtml();
+			String text = url + "||" + htmlParseData.getText();
+			String html = url + "||" + htmlParseData.getHtml();
 			Set<WebURL> links = htmlParseData.getOutgoingUrls();
+
+			String fileName = new Integer(IdGenerator.getInstance()
+					.getNextIncrementalId()).toString();
+			TextFile.write(Constants.CRAWLER_STORAGE_LOCATION + "text/",
+					fileName + ".txt", text);
+			TextFile.write(Constants.CRAWLER_STORAGE_LOCATION + "html/",
+					fileName + ".html", html);
 
 			System.out.println("Text length: " + text.length());
 			System.out.println("Html length: " + html.length());

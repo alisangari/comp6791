@@ -1,5 +1,6 @@
 package com.crawler;
 
+import contract.Constants;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -8,11 +9,10 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
 public class Controller {
 	    public static void main(String[] args) throws Exception {
-	        String crawlStorageFolder = "C:/Users/ASangari/Documents/crawled";
-	        int numberOfCrawlers = 7;
+	        int numberOfCrawlers = 10;
 
 	        CrawlConfig config = new CrawlConfig();
-	        config.setCrawlStorageFolder(crawlStorageFolder);
+	        config.setCrawlStorageFolder(Constants.CRAWLER_STORAGE_LOCATION);
 
 	        /*
 	         * Instantiate the controller for this crawl.
@@ -28,8 +28,6 @@ public class Controller {
 	         * which are found in these pages
 	         */
 	        controller.addSeed("http://www.concordia.ca/encs.html");
-//	        controller.addSeed("http://www.ics.uci.edu/~welling/");
-//	        controller.addSeed("http://www.ics.uci.edu/");
 
 	        /*
 	         * Start the crawl. This is a blocking operation, meaning that your code
